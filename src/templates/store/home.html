@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block content %}
+<main>
+  <div class="album py-5 bg-light">
+    <div class="container">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        <!------>
+        {% for producto in queryset %}
+        <div class="col">
+          <div class="card shadow-sm">
+            <a href= "{{ url_for('View_product',Id=producto.id) }}">
+            <div id="thumbnailstore"><img src={{producto.image}}> </div></a>
+            <div class="card-body">
+              <p class="card-text">{{producto.nameproduct}}</p>
+              <p class="card-text">{{producto.description}}</p>
+              <div class="btn-group">
+                <button type="button" class="btn btn-sm btn-outline-secondary">{{producto.category}}</button>
+              </div>
+              
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="card-body">
+                <p class="card-text">${{producto.price}}.00 MXN</p>
+                
+              </div>
+              {% if current_user.is_authenticated %}
+              <button type="button" id="button"><a style="text-decoration:none;color:rgb(255, 255, 255)" href=# >Comprar</a></button>
+              {% else %}
+              <button class="btn btn-outline-light me-2" type="button" id="button"><a style="text-decoration:none;color:rgb(255, 255, 255)"  href="{{ url_for('login') }}" >Comprar</a></button>
+              {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        {% endfor %}
+        <!------>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+{% endblock content %}

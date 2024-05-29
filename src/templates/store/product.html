@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+{% block content %}
+<head>
+    <!-- Font Awesome Icon Library -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .checked {
+            color: orange;
+        }
+    </style>
+</head>
+<main>
+    <div class="album py-5 bg-light">
+        <div class="container dark-grey-text mt-5 bg-light">
+            <!--Grid row-->
+            <div class="row wow fadeIn">
+                <!--Grid column-->
+                <div class="col-md-6 mb-6">
+                    <img src="{{product.image}}" class="img-fluid" alt="">
+                </div>
+                <!--Grid column-->
+                <!--Grid column-->
+                <div class="col-md-6 mb-4">
+                    <!--Content-->
+                    <div class="p-4">
+                        <div class="mb-3">
+                            <span style="color:blue" class="badge purple mr-2">{{product.category}}</span>
+                        </div>
+                        <p class="lead font-weight-bold">{{product.nameproduct}}</p>
+                        <p class="lead">
+                            <span>$</span><span>{{product.price}}MXN</span>
+                        </p>
+                        <p>{{product.description}}</p>
+                        <form class="d-flex justify-content-left" action="/cart" method="POST">
+                            <input type="number" value="1" min="1" name="cantidad" aria-label="Search"
+                                class="form-control" style="width: 100px">
+                            <input type="text" value="#" name="idProducto" style="display: none;">
+                            <button class="btn btn-success" type="submit">Agregar al carrito<i
+                                    class="shopping ml-1"></i>
+                            </button>
+                            <a class="btn btn-outline-info" style="margin-left: 10px" href="#">Valorar producto</a>
+                            <a class="btn btn-outline-info" style="margin-left: 10px" href="#">Editar valoración</a>
+                        </form>
+
+                    </div>
+                    <!--Content-->
+
+                </div>
+                <!--Grid column-->
+
+            </div>
+            <!--Grid row-->
+
+            <hr>
+
+            <!--Grid row-->
+            <div class="row d-flex justify-content-center wow fadeIn">
+                <!--Grid column-->
+                <p>
+                <div class="col-md-6 text-center">
+                    <h4 class="my-4 h4">Comentarios</h4>
+                </div>
+                </p>
+
+                <!--Grid column-->
+                <!-----form-------->
+                <div class="col-md-5 border-right">
+                    <form action="/add_comment" method="POST">
+                    <div class="p-3 py-5">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h4 class="text-right">Add comment</h4>
+                            <input type="hidden" class="form-control" name="LogUsrId" value="{{current_user.id}}" >
+                            <input type="hidden" class="form-control" name="ProductId" value="{{product.id}}" >
+                            <input type="hidden" class="form-control" name="LogUsrName" value="{{current_user.name}}" >
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-md-6"><label class="labels">Comment</label><input type="text" class="form-control" name="Comment"></div>
+                        </div>
+                        <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="submit">comment</button></div>
+                        <div class="mt-2 text-center"><button class="btn btn-primary profile-button" ><a style="text-decoration:none;color:rgb(255, 255, 255)" href="{{ url_for('index') }}">Cancel</a></button></div>
+                    </div>
+                </form>
+                </div>
+                <!-------form------>
+                {% if coment is defined and coment|length > 0 %}
+                
+                {% for comentarios in coment %}
+                <!--comentario-->
+
+                <div class="card card-inner">
+                    <div class="card-body">
+                        <div class="row">
+                            
+                            <div class="col-md-2">
+                                <a style="text-decoration:none;color:rgb(255, 255, 255)" href="{{ url_for('profile_public',Name=comentarios.name_user) }}"><img src="https://image.ibb.co/jw55Ex/def_face.jpg" class="img img-rounded img-fluid" /></a>
+                                <div class="autor text-center "><strong></strong></div>
+                                <p>
+                                    <div class="date text-center">{{comentarios.name_user}}</div>
+                                </p>
+                                <p>
+                                <div class="date text-center">{{comentarios.date}}</div>
+                                </p>
+                            </div>
+
+                            <div class="col-md-10">
+                                <p>
+                                    <body>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star "></span></span>
+                                    </body>
+                                </p>
+                                <span class="badge brown mr-2">Bueno</span>
+
+                                {% autoescape false %}
+                                <p class="date text-center"> {{comentarios.text|safe}}</p>
+                                <span class="badge brown mr-2">Usuario verificado</span>
+                                {% endautoescape %}
+                                <hr>
+                                <div class="mt-2 text-center"><button class="btn btn-primary profile-button" ><a style="text-decoration:none;color:rgb(255, 255, 255)" href="{{ url_for('delete_comment',Idp=product.id,Id=comentarios.id) }}">Eliminar</a></button></div>
+                                
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </div>
+               
+                {% endfor %}
+                {% else %}
+                <div class="col-md-13 text-center">
+                    <h4 class="my- h4">No hay comentarios</h4>
+                </div>
+                {% endif %}
+                
+
+                <!--comentario-->
+
+                <!--Grid row-->
+            </div>
+</main>
+{% endblock content %}

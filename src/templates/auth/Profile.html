@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Profile</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/js/bootstrap.bundle.min.js">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+<style>
+    body {
+    background: #30bcae
+}
+
+.form-control:focus {
+    box-shadow: none;
+    border-color: #BA68C8
+}
+
+.profile-button {
+    background:  #30bcae;
+    box-shadow: none;
+    border: none
+}
+
+.profile-button:hover {
+    background: #4b8b7b
+}
+
+.profile-button:focus {
+    background: #3c8176;
+    box-shadow: none
+}
+
+.profile-button:active {
+    background: #354948;
+    box-shadow: none
+}
+
+.back:hover {
+    color: #4f6e67;
+    cursor: pointer
+}
+
+.labels {
+    font-size: 11px
+}
+
+.add-experience:hover {
+    background: #BA68C8;
+    color: #fff;
+    cursor: pointer;
+    border: solid 1px #BA68C8
+}
+.file-select {
+  position: relative;
+  display: inline-block;
+}
+
+.file-select::before {
+  background-color: #30bcae;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 3px;
+  content: 'Seleccionar'; /* testo por defecto */
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+.file-select input[type="file"] {
+  opacity: 0;
+  width: 100px;
+  height: 50px;
+  display: inline-block;
+}
+
+#src-file::before {
+  content: 'Choose Image';
+}
+
+#src-profile::before {
+  content: 'Import Profile';
+}
+</style>
+</head>
+<body>
+<div class="container rounded bg-white mt-5 mb-5">
+    <div class="row">
+    
+        <div class="col-md-3 border-right">
+            <form action="/update_profile" method="POST"  enctype="multipart/form-data">
+                <input type="hidden" class="form-control" name="ModUsrId" value="{{user.id}}" >
+                <input type="hidden" class="form-control" name="LogUsrId" value="{{current_user.id}}" >
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+                {% if user.img  %}
+             
+                <img class="rounded-circle mt-5" width="150px" height="150px" src="{{ url_for('display_image',img=user.img) }}">
+                {% else %}
+                <img class="rounded-circle mt-5" width="150px" src="https://th.bing.com/th/id/OIP.OqvjX0eYPqEXPjc_eyyGjQHaHa?pid=ImgDet&rs=1">
+                {% endif %}
+                <span class="font-weight-bold">{{user.name}}</span>
+                <span class="text-black-50">{{user.email}}</span> 
+                <div class="mt-5 file-select" id="src-file" >
+                    <input type="file" autocomplete="off" name="Image" aria-label="Archivo">
+                </div>        
+                <div class="mt-5 file-select" id="src-profile" >
+                    <input type="file" autocomplete="off" name="File" aria-label="Archivo">
+                </div>  
+            </div>
+        </div>
+
+        <div class="col-md-5 border-right">
+            
+            <div class="p-3 py-5">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="text-right">Profile Settings</h4>
+                    
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-6"><label class="labels">Name</label><input type="text" class="form-control" name="Name" value="{{user.name}}"></div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-12"><label class="labels">Mobile Number</label><input type="number" class="form-control" name="Mobile_number" value="{{user.mobile_number}}"></div>
+                    <div class="col-md-12"><label class="labels">Address</label><input type="text" class="form-control" name="Adress" value="{{user.adress}}"></div>
+                    <div class="col-md-12"><label class="labels">Email</label><input type="email" class="form-control" name="Email" value="{{user.email}}"></div>
+                    
+                   
+                </div>
+                <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="submit">Save Profile</button></div>
+                <div class="mt-3 text-center"><button class="btn btn-primary profile-button" ><a style="text-decoration:none;color:rgb(255, 255, 255)" href="{{ url_for('Export_profile',Id=current_user.id) }}">Export Profile</a></button></div>
+                <div class="mt-5 text-center"><button class="btn btn-primary profile-button" ><a style="text-decoration:none;color:rgb(255, 255, 255)" href="{{ url_for('index') }}">Cancel</a></button></div>
+            </div>
+      
+        </div>
+    </form>
+
+
+        <div class="col-md-4">
+            <div class="p-3 py-5">
+                <form action="/update_password", method="POST">
+                <input type="hidden" class="form-control" name="ModUsrId" value="{{user.id}}">
+                <input type="hidden" class="form-control" name="LogUsrId" value="{{current_user.id}}">
+                <div class="d-flex justify-content-between align-items-center experience"><span>Change Password</span></div><br>
+                <div class="col-md-12"><label class="labels">Old Password</label><input type="password" class="form-control" name="Password" placeholder="Password" required></div>
+                <div class="col-md-12"><label class="labels">New password</label><input type="password" class="form-control" name="NewPassword" placeholder="new password" required></div>
+                <div class="col-md-12"><label class="labels">Confirm password</label><input type="password" class="form-control" name="ConfPassword" placeholder="confirm password" required></div>
+                <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="submit">Save </button></div>
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages%}
+                    {% for message in messages %}
+                    <div class="mt-5 text-center"  role="alert">
+                        <strong>{{ message}}</strong>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                    {% endwith %}
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>
+</div>
+</body>
+</html>

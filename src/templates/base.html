@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE-edga">
+    <meta name="viewport" content="width=device-width, initial-scale-1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <!-------- Boostrap ------->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
+    <!-------  Custom CSS  -------->
+    {% block customCSS %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/main.css')}}">
+    {% endblock %}
+
+</head>
+
+<body>
+    <header class="p-3 text-bg-dark">
+        <div class="container">
+          <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a id="Logo"   title="Aplicacion Vulnerable" href="{{ url_for('index') }}"><img width="40" height="32"  src="https://cdn-icons-png.flaticon.com/512/1995/1995814.png" alt="Aplicacion Vulnerable" /></a>
+           <div class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0"></div>
+            <form action="{{url_for ('search') }}" method="POST"  class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+              <input type="search"  name="search" class="form-control form-control-dark text-bg-dark" placeholder="Search..." aria-label="Search">
+            </form>
+            <div class="text-end">
+              {% if current_user.is_authenticated %}
+              {% if current_user.isadmi%}
+              <a class="btn btn-outline-light me-2" href="{{ url_for('Manage_users') }}">Clients</a>
+              <a class="btn btn-outline-light me-2" href="{{ url_for('view_logs') }}">Test</a>
+              {% endif %}
+            <a class="btn btn-outline-light me-2" href="{{ url_for('Profile',Id=current_user.id) }}">{{current_user.name}}</a>
+            <a class="btn btn-outline-light me-2" href="{{ url_for('logout') }}">Log-out</a>
+            <!---<a class="btn btn-outline-light me-2" href="{{ url_for('orders') }}">Orders</a>
+            <a class="btn btn-outline-light me-2" href="{{ url_for('my_shopping_cart') }}">My cart</a>--->
+            {% else %}
+            <a class="btn btn-outline-light me-2" href="{{ url_for('login') }}">Sing-up</a>
+            <!---<a class="btn btn-outline-light me-2" href="{{ url_for('login') }}">Orders</a>
+            <a class="btn btn-outline-light me-2" href="{{ url_for('login') }}">My cart</a>--->
+            {% endif %}
+  
+            </div>
+          </div>
+        </div>
+      </header>
+    <div class="container">
+        {% block content %}
+        {% endblock content %}
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

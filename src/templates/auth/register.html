@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE-edga">
+  <meta name="viewport" content="width=device-width, initial-scale-1.0">
+  <title>{% block title %}{% endblock %}</title>
+  <!-------- Boostrap ------->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
+  <!-------  Custom CSS  -------->
+  {% block customCSS %}
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/main.css')}}">
+  {% endblock %}
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="info">
+      <h1>Register</h1>
+    </div>
+  </div>
+  <div id="form">
+    <div id="thumbnail"><img src="https://cdn-icons-png.flaticon.com/512/1995/1995751.png" /></div>
+    {% with messages = get_flashed_messages() %}
+    {% if messages%}
+    {% for message in messages %}
+    <div id="alert" role="alert">
+      <strong>{{ message}}</strong>
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+    <form id="register-form" action="/register" method="POST">
+      <input type="hidden" name="IsAdmi" value="False">
+      <input type="text" name="Username" placeholder="Username" required />
+      <input type="password" name="Password" placeholder="Password" required />
+      <input type="password" name="Password2" placeholder="Confirm password" required/>
+      <input type="text" name="Email" placeholder="Email address" required/>
+      <input type="text" name="Mobile_number" placeholder="Mobile number" />
+      <input type="text" name="Adress" placeholder="Adress" />
+      <button type="submit">create</button>
+      <p id="message">Already registered?<a href="{{ url_for('login') }}">Login</a></p>
+      <p id="message"><a href="{{ url_for('index') }}">Home</a></p>
+  </div>
+</body>
+
+</html>
